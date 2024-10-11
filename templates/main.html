@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result Screen</title></head>
+  <style>
+    /* Resetting default margin and padding */
+    body, h1, h2, h3, p, ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* General styles for the component */
+    .component {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5; /* Set your desired background color */
+        font-family: Arial, sans-serif; /* Use your preferred font family */
+    }
+
+    .component .overlap-group {
+        position: relative;
+        width: 450px; /* Adjust width as needed */
+        height: auto;
+        padding: 20px;
+        background-color: #ebeef3;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Styles for individual components */
+    .frame {
+        margin-bottom: 20px;
+    }
+
+    .frame label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .frame select,
+    .frame input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* Styles for the button */
+    .calculate-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    /* Output result */
+    #routeResult {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="component">
+    <div class="overlap-group">
+      <h1 class="text-wrapper">Flight Optimization</h1>
+      <br>
+
+      <!-- Departure City Dropdown -->
+      <div class="frame">
+        <label for="departureCity">Departure City</label>
+        <select id="departureCity">
+          <option value="Islamabad">Islamabad</option>
+          <option value="Karachi">Karachi</option>
+          <option value="Lahore">Lahore</option>
+          <option value="Quetta">Quetta</option>
+          <option value="Multan">Multan</option>
+          <option value="Rawalpindi">Rawalpindi</option>
+          <option value="Peshawar">Peshawar</option>
+          <option value="Faisalabad">Faisalabad</option>
+          <option value="Sialkot">Sialkot</option>
+          <option value="Gwadar">Gwadar</option>
+          <option value="Sukkur">Sukkur</option>
+          <option value="Gujranwala">Gujranwala</option>
+          <!-- Add more options as needed -->
+        </select>
+      </div>
+
+      <!-- Destination City Dropdown -->
+      <div class="frame">
+        <label for="destinationCity">Destination City</label>
+        <select id="destinationCity">
+          <option value="Islamabad">Islamabad</option>
+          <option value="Karachi">Karachi</option>
+          <option value="Lahore">Lahore</option>
+          <option value="Quetta">Quetta</option>
+          <option value="Multan">Multan</option>
+          <option value="Rawalpindi">Rawalpindi</option>
+          <option value="Peshawar">Peshawar</option>
+          <option value="Faisalabad">Faisalabad</option>
+          <option value="Sialkot">Sialkot</option>
+          <option value="Gwadar">Gwadar</option>
+          <option value="Sukkur">Sukkur</option>
+          <option value="Gujranwala">Gujranwala</option>
+          <!-- Add more options as needed -->
+        </select>
+      </div>
+
+      <!-- Date Input -->
+      <div class="frame">
+        <label for="dateInput">Date (YYYY-MM-DD)</label>
+        <input type="text" id="dateInput" placeholder="YYYY-MM-DD">
+      </div>
+
+      <!-- Calculate Route Button -->
+      <button class="calculate-btn" onclick="calculateRoute()">Calculate Route</button>
+
+      <!-- Output Result Placeholder -->
+      <div id="routeResult"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculateRoute() {
+    const departureCity = document.getElementById("departureCity").value;
+    const destinationCity = document.getElementById("destinationCity").value;
+    const date = document.getElementById("dateInput").value;
+
+    // AJAX request to the Flask server
+    fetch('/calculate_route', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'departureCity': departureCity,
+            'destinationCity': destinationCity,
+            'dateInput': date
+        }),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .then(response => response.text())
+    .then(optimalRoute => {
+        // Display the result
+        document.getElementById("routeResult").innerText = `Optimal Route: ${optimalRoute}`;
+    });
+}
+
+  </script>
+</body>
+</html>
